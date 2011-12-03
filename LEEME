@@ -1,0 +1,16 @@
+Fono Estafa:
+
+aplicación móvil-web de denuncia de números telefónicos usados en estafas
+
+Parte web:
+	mostrar la aplicacion
+	registrar usuarios
+	registrar denuncias
+
+Parte móvil (android):
+	denunciar numero de llamada en la parte Web
+	ante cualquier llamada de numero de telefono desconocido, consulta parte web
+	si el numero esta denuciado, muestra mensaje de alerta
+
+
+
