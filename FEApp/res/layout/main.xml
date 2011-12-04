@@ -5,8 +5,28 @@
     android:orientation="vertical" >
 
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/DenounceTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:text="@string/denounce_scam_attempt"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+    
+    <TextView 
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No data"/>
+
+    <Button
+        android:id="@+id/DenounceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/do_denounce" />
 
 </LinearLayout>
