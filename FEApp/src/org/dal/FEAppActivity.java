@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,7 +122,6 @@ public class FEAppActivity extends ListActivity {
 				msg = this.getText(R.string.connection_error);
 			
 			toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-				
 		}
 		catch (IOException e)
 		{
@@ -143,5 +144,12 @@ public class FEAppActivity extends ListActivity {
         
         ListAdapter adapter = new CallEntryAdapter(this, cursor);
         setListAdapter(adapter);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 }

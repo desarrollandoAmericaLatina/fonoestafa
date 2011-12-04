@@ -10,5 +10,7 @@
     <string name="ignore">ignorar</string>
     <string name="denounce_done">denuncia realizada</string>
     <string name="connection_error">error de conexión</string>
+    <string name="history">historial</string>
+    <string name="preferences">preferencias</string>
 
 </resources>
