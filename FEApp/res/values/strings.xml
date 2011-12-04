@@ -2,6 +2,9 @@
 <resources>
 
     <string name="hello">Hello World, FEAppActivity!</string>
-    <string name="app_name">FEApp</string>
+    <string name="app_name">Fono Estafa</string>
+    <string name="possible_scam">Posible estafa</string>
+    <string name="caution">Atención Atención</string>
+    <string name="caution_format">numero %1$s  desde %2$s</string>
 
 </resources>

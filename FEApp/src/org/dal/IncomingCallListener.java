@@ -30,17 +30,18 @@ public class IncomingCallListener extends PhoneStateListener {
 	
 	public void launch_notif(String number, String since)
 	{
+		Log.v(TAG, "launch_notif(" + number + ", " + since + ")");
 		NotificationManager notif_manager = 
 				(NotificationManager) this.ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		int icon = R.drawable.ic_notif;
-		CharSequence tickerText = "Atencion Atencion";
+		CharSequence tickerText = ctx.getText(R.string.caution);
 		long when = System.currentTimeMillis();
 
 		Notification notification = new Notification(icon, tickerText, when);
 		
-		CharSequence contentTitle = "Posible intento de estafa";
-		CharSequence contentText = "el numero " + number + " esta denunciado desde " + since;
+		CharSequence contentTitle = ctx.getText(R.string.possible_scam); 
+		CharSequence contentText = ctx.getString(R.string .caution_format, number, since);
 		Intent notificationIntent = new Intent(this.ctx, IncomingCallListener.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this.ctx, 0, notificationIntent, 0);
 
@@ -63,11 +64,13 @@ public class IncomingCallListener extends PhoneStateListener {
 			String line = reader.readLine();
 			Log.v(TAG, "linea recibida: |" + line + "|");
 			
-			if (line.startsWith("True"))
-			{
-				String fields[] = line.split(";");
+			//if (line.startsWith("True"))
+			//{
+			String fields[] = line.split(";");
+			Log.v(TAG, "campo 0: " + fields[0]);
+			if (fields[0].equals("True"))
 				launch_notif(number, fields[1]);
-			}
+			//}
 		}
 		catch (IOException e)
 		{
