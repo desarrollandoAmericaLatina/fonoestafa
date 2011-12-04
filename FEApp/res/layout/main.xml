@@ -22,11 +22,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No data"/>
-
-    <Button
-        android:id="@+id/DenounceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/do_denounce" />
-
 </LinearLayout>
