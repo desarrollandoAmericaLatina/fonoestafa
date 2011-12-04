@@ -27,6 +27,7 @@
       			<action android:name="android.intent.action.PHONE_STATE" />
 			</intent-filter>
 		</receiver>
+		
         <activity android:name=".Preferences" android:label="@string/preferences">
         </activity>
     </application>
