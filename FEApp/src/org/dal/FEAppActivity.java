@@ -14,6 +14,8 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,8 @@ import android.telephony.PhoneNumberUtils;
 
 public class FEAppActivity extends ListActivity {
 	public static final String TAG = "FEActivity";
+	
+	public static final String PREFS_NAME = "FEApp";
 	
 	public class CallEntryAdapter extends CursorAdapter {
 		
@@ -102,12 +107,19 @@ public class FEAppActivity extends ListActivity {
 	{
 		Toast toast;
 		
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		String server_name = settings.getString("server", "localhost");
+		String username = settings.getString("username", "");
+		String password = settings.getString("password", "");
+		
+		Log.v(TAG, "denunciando { server: |" + server_name + "|, user: |" + username + "|, pass: |" + password + "|");
+		
 		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://10.0.2.2:8000/denounce";
+		String uri_str = "http://" + server_name + "/denounce";
 		HttpPost request = new HttpPost(uri_str);
 		request.addHeader("DENOUNCED_NUMBER", number);
-		request.addHeader("USER", "usuario");
-		request.addHeader("PASS", "pass");
+		request.addHeader("USER", username);
+		request.addHeader("PASS", password);
 		
 		try {
 			HttpResponse resp = client.execute(request);
@@ -130,11 +142,36 @@ public class FEAppActivity extends ListActivity {
 		toast.show();
 	}
 	
+	
+	public void init_prefs()
+	{
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		
+		if (settings.contains("configured") && settings.getBoolean("configured", false))
+		{
+			Log.v(TAG, "aplicacion ya configurada");
+		}
+		else
+		{
+			Log.v(TAG, "aplicacion no tiene config");
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean("configured", true);
+			editor.putString("server", "10.0.2.2:8000");
+			//editor.putBoolean("enabled", false);
+			editor.putString("username", "fonoestafa");
+			editor.putString("password", "fonoestafa");
+			editor.commit();
+		}
+	}
+	
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        init_prefs();
         
         Cursor cursor = getContentResolver().query(Calls.CONTENT_URI, 
         		new String[] {Calls._ID, Calls.NUMBER, Calls.DATE}, 
@@ -151,5 +188,25 @@ public class FEAppActivity extends ListActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+
+        case R.id.history:
+        	Log.v(TAG, "selecionada historial");
+        	return true;
+        	
+        case R.id.preferences:
+        	Log.v(TAG, "seleccionada preferencias");
+        	Intent i = new Intent(this, Preferences.class);
+            startActivity(i);
+        	return true;
+        	
+        default:
+        	return super.onOptionsItemSelected(item);
+        }
     }
 }

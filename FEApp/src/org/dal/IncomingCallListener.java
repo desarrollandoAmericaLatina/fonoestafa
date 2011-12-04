@@ -14,6 +14,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -54,8 +55,12 @@ public class IncomingCallListener extends PhoneStateListener {
 	public void queryNumber(String number)
 	{
 		Log.v(TAG, "queryNumber");
+		
+		SharedPreferences settings = ctx.getSharedPreferences(FEAppActivity.PREFS_NAME, 0);
+		String server_name = settings.getString("server", "localhost");
+		
 		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://10.0.2.2:8000/getinfo?num=" + number;
+		String uri_str = "http://" + server_name + "/getinfo?num=" + number;
 		Log.v(TAG, "consultando: |" + uri_str + "|");
 		HttpGet request = new HttpGet(uri_str);
 		try {
@@ -64,13 +69,10 @@ public class IncomingCallListener extends PhoneStateListener {
 			String line = reader.readLine();
 			Log.v(TAG, "linea recibida: |" + line + "|");
 			
-			//if (line.startsWith("True"))
-			//{
 			String fields[] = line.split(";");
 			Log.v(TAG, "campo 0: " + fields[0]);
 			if (fields[0].equals("True"))
 				launch_notif(number, fields[1]);
-			//}
 		}
 		catch (IOException e)
 		{

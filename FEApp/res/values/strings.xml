@@ -12,5 +12,8 @@
     <string name="connection_error">error de conexión</string>
     <string name="history">historial</string>
     <string name="preferences">preferencias</string>
+    <string name="username">nombre de usuario</string>
+    <string name="password">contraseña</string>
+    <string name="save_prefs">guadar preferencias</string>
 
 </resources>
