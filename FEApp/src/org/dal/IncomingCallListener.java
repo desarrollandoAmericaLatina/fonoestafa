@@ -28,7 +28,7 @@ public class IncomingCallListener extends PhoneStateListener {
 		this.ctx = context;
 	}
 	
-	public void launch_notif(String number)
+	public void launch_notif(String number, String since)
 	{
 		NotificationManager notif_manager = 
 				(NotificationManager) this.ctx.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -40,7 +40,7 @@ public class IncomingCallListener extends PhoneStateListener {
 		Notification notification = new Notification(icon, tickerText, when);
 		
 		CharSequence contentTitle = "Posible intento de estafa";
-		CharSequence contentText = "el numero " + number + " esta denunciado";
+		CharSequence contentText = "el numero " + number + " esta denunciado desde " + since;
 		Intent notificationIntent = new Intent(this.ctx, IncomingCallListener.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this.ctx, 0, notificationIntent, 0);
 
@@ -63,8 +63,11 @@ public class IncomingCallListener extends PhoneStateListener {
 			String line = reader.readLine();
 			Log.v(TAG, "linea recibida: |" + line + "|");
 			
-			if (line.equals("True"))
-				launch_notif(number);
+			if (line.startsWith("True"))
+			{
+				String fields[] = line.split(";");
+				launch_notif(number, fields[1]);
+			}
 		}
 		catch (IOException e)
 		{
@@ -79,10 +82,6 @@ public class IncomingCallListener extends PhoneStateListener {
 		case TelephonyManager.CALL_STATE_RINGING:
 			Log.v(TAG, "!!!! Ringing: " + incomingNumber);
 			queryNumber(incomingNumber);
-			break;
-			
-		case TelephonyManager.CALL_STATE_OFFHOOK:
-			Log.v(TAG, "!!!! Offhook: " + incomingNumber);
 			break;
 		}
 	}
