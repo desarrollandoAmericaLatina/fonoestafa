@@ -106,11 +106,21 @@ public class FEAppActivity extends ListActivity {
 		request.addHeader("DENOUNCED_NUMBER", number);
 		request.addHeader("USER", "usuario");
 		request.addHeader("PASS", "pass");
+		
 		try {
 			HttpResponse resp = client.execute(request);
 			final int status = resp.getStatusLine().getStatusCode();
 			Log.v(TAG, "status: " + status);
-			toast = Toast.makeText(this, this.getText(R.string.denounce_done), Toast.LENGTH_SHORT);
+			
+			CharSequence msg;
+			
+			if (status == 200)
+				msg = this.getText(R.string.denounce_done);
+			else
+				msg = this.getText(R.string.connection_error);
+			
+			toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+				
 		}
 		catch (IOException e)
 		{

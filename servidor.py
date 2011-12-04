@@ -23,7 +23,16 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 				else:
 					return self.response(msg = 'False')
 
-	def response(self, msg, code = 200, header = ('Content-type', 'text/plain')):
+	def do_POST(self):
+		args = urlparse(self.path)
+		if args.path != '/denounce':
+			return self.response(code=400)
+
+		print 'llego un POST!!'
+		print self.headers
+		return self.response(msg='OK')
+
+	def response(self, msg='', code=200, header=('Content-type', 'text/plain')):
 		self.send_response(code)
 		self.send_header(header[0], header[1])
 		self.end_headers()
