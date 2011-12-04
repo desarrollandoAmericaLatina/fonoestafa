@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		
+		<title>Open Source anti-scam solution for Android</title>
+		
+		<!--                       CSS                       -->
+
+		<!-- Reset Stylesheet -->
+		<link rel="stylesheet" href="/css/reset.css" type="text/css" media="screen" />
+	  
+		<!-- Main Stylesheet -->
+
+		<link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
+		
+		<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+		<link rel="stylesheet" href="/css/invalid.css" type="text/css" media="screen" />	
+		
+		<!-- Colour Schemes
+	  
+		Default colour scheme is green. Uncomment prefered stylesheet to use it.
+		
+		<link rel="stylesheet" href="blue.css" type="text/css" media="screen" />
+		
+		<link rel="stylesheet" href="red.css" type="text/css" media="screen" />  
+	 
+		-->
+		
+		<!-- Internet Explorer Fixes Stylesheet -->
+		
+		<!--[if lte IE 7]>
+			<link rel="stylesheet" href="ie.css" type="text/css" media="screen" />
+		<![endif]-->
+		
+		<!--                       Javascripts                       -->
+  
+		<!-- jQuery -->
+		<script type="text/javascript" src="/js/jquery.js"></script>
+		<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+
+		
+		<!--[if IE]><script type="text/javascript" src="/scripts/jquery.bgiframe.js"></script><![endif]-->
+
+		
+		<!-- Internet Explorer .png-fix -->
+		
+		<!--[if IE 6]>
+			<script type="text/javascript" src="/scripts/DD_belatedPNG_0.0.7a.js"></script>
+			<script type="text/javascript">
+				DD_belatedPNG.fix('.png_bg, img, li');
+			</script>
+		<![endif]-->
+		
+		
+	<script type="text/javascript">
+	$(document).ready(function(){
+    	$('#id_denounceButton').click(function(event){
+    	    event.preventDefault();
+    	    $('#id_searchDiv, #id_denounceDiv, #id_estafador').fadeOut();
+    	    $('#id_denounceDiv').fadeIn();
+    	});
+
+    	$('#id_searchButton').click(function(event){
+    	    event.preventDefault();
+    	    $('#id_searchDiv, #id_denounceDiv, #id_estafador').fadeOut();
+    	    $('#id_searchDiv').fadeIn();
+    	});
+    	
+    	$('#id_denounceForm').validate({
+    	    submitHandler: function(form){
+    	        var $form = $('#id_denounceForm')
+    	        $.ajax({
+    	            url: $form.attr('action')
+    	            , data: $form.serialize()
+    	            , success: function(response) {
+    	                alert(response);
+    	            }
+    	        });
+    	    }
+    	});
+
+    	$('#id_searchForm').validate({
+    	    submitHandler: function(form){
+    	        var $form = $('#id_searchForm');
+    	        $.ajax({
+    	            url: $form.attr('action')
+    	            , data: $form.serialize()
+    	            , success: function(response) {
+    	                response_splitted = response.split(';');
+    	                if (response_splitted[0] == 'si') {
+    	                    fecha = response_splitted[1];
+    	                    $('#id_estafador').fadeIn();
+    	                    $('#ask_response').html('!!!!! Es estadafor, ten cuidado, su primera estafa fue en ' + fecha + '!!!!!');
+    	                } else {
+    	                    alert('no es estadafor, responde tranquilo');
+    	                }
+    	            }
+    	        });
+    	    }
+    	});
+
+	});
+	</script>
+		
+	</head>
+  
+	<body><div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+
+		
+		<div id="sidebar"><div id="sidebar-wrapper"> <!-- Sidebar with logo and menu -->
+			
+			<h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
+		  
+			<!-- Logo (221px wide) -->
+			<a href="#"><img id="logo" src="/images/logo.png" alt="Simpla Admin logo" /></a>
+		  
+			<!-- Sidebar Profile links -->
+			<div id="profile-links" style="text-align:justify;">
+				<p><a href="#" title="">Browse our code</a> | <a href="#" title="Sign Out">Other link</a></p>
+			<p>Fono Estafa, es un programa social para android para evitar estafas por teléfono, avisandole al usuario que el número que lo está llamando ha sido denunciado por otros usuarios.</p>
+				<p>Algunas recomendaciones:</p>
+				<ul>
+                    <li> No dar información.</li>
+                    <li> Comunicarse con las autoridades respectivas, dando el numero de la persona que lo contactó.</li>
+                    <li> Si vuelve a recibir llamadas del mismo número no conteste.</li>
+				</ul>
+			</div>
+			
+			<ul id="main-nav">  <!-- Accordion Menu -->
+			</ul> <!-- End #main-nav -->
+
+			
+		</div></div> <!-- End #sidebar -->
+		
+		<div id="main-content"> <!-- Main Content Section with everything -->
+			
+			<noscript> <!-- Show a notification if the user has disabled javascript -->
+				<div class="notification error png_bg">
+					<div>
+						Javascript is disabled or is not supported by your browser. Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">upgrade</a> your browser or <a href="http://www.google.com/support/bin/answer.py?answer=23852" title="Enable Javascript in your browser">enable</a> Javascript to navigate the interface properly.
+					</div>
+				</div>
+			</noscript>
+			
+			<!-- Page Head -->
+			<h2>Evite estafas</h2>
+
+			<p id="page-intro">Programa social para evitar estafas por teléfono.</p>
+			
+			<ul class="shortcut-buttons-set">
+				
+				<li><a id="id_denounceButton" class="shortcut-button" href="#"><span>
+					<img src="/images/Phone.png" alt="icon" /><br />
+					Denunciar estafador
+				</span></a></li>
+				
+				<li><a id="id_searchButton" class="shortcut-button" href="#"><span>
+					<img src="/images/user_anonymous.png" alt="icon" /><br />
+					Buscar estafador
+				</span></a></li>
+
+				
+				<li><a class="shortcut-button" href="#"><span>
+					<img src="/images/android_platform.png" alt="icon" /><br />
+					Descargar aplicación
+				</span></a></li>
+
+			</ul><!-- End .shortcut-buttons-set -->
+			
+			<div class="clear"></div> <!-- End .clear -->
+
+            <!-- Denunciar -->
+			<div id="id_denounceDiv" class="content-box" style="display:none;"><!-- Start Content Box -->
+				
+				<div class="content-box-header">
+					
+					<h3>Denunciar estafador</h3>
+					<div class="clear"></div>
+					
+				</div> <!-- End .content-box-header -->
+				
+				<div class="content-box-content">
+					
+					<div class="tab-content default-tab" id="tab1" style="display:none;"> <!-- This is the target div. id must match the href of this div's tab -->
+
+
+					</div> <!-- End #tab1 -->
+					
+					<div class="tab-content" id="tab2">
+					
+						<form id="id_denounceForm" action="{% url hustler.create %}" method="get">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+				                <p>Antes de denunciar aquí, lea estas recomendaciones:</p>
+				                <ul>
+                                    <li> No dar información.</li>
+                                    <li> Comunicarse con las autoridades respectivas, dando el numero de la persona que lo contactó.</li>
+                                    <li> Si vuelve a recibir llamadas del mismo número no conteste.</li>
+				                </ul>
+								<p>
+									<label>Número estafador</label>
+									<input class="text-input medium-input required" type="text" name="number" />
+									<br /><small>Ingrese el número que desee denunciar</small>
+								</p>
+								<p>
+									<label>Comentarios</label>
+									<textarea rows="10" name="comments" class="required"></textarea>
+									<br /><small>Cuentale a los demás lo que más puedas para ayudar a otros que eviten estafas.</small>
+								</p>
+								<p>
+									<input class="button" type="submit" value="Denunciar" />
+								</p>
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+
+							
+						</form>
+						
+						
+						
+						
+						
+					</div> <!-- End #tab2 -->        
+					
+				</div> <!-- End .content-box-content -->
+				
+			</div> <!-- End .content-box -->
+
+			<div class="clear"></div>
+
+            <!-- Buscador -->
+			<div id="id_searchDiv" class="content-box" style="display:none;"><!-- Start Content Box -->
+				
+				<div class="content-box-header">
+					
+					<h3>Buscar estafador</h3>
+					<div class="clear"></div>
+					
+				</div> <!-- End .content-box-header -->
+				
+				<div class="content-box-content">
+					
+					<div class="tab-content default-tab" id="tab1" style="display:none;"> <!-- This is the target div. id must match the href of this div's tab -->
+
+
+					</div> <!-- End #tab1 -->
+					
+					<div class="tab-content" id="tab2">
+					
+						<form id="id_searchForm" action="/hustler/ask" method="post">
+							
+							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+								<p>
+									<label>Número estafador</label>
+									<input class="text-input medium-input required" type="text" id="" name="number" />
+									<br /><small>Ingrese el número que desee buscar</small>
+								</p>
+								<p>
+									<input class="button" type="submit" value="Buscar" />
+								</p>
+								
+							</fieldset>
+							
+							<div class="clear"></div><!-- End .clear -->
+
+							
+						</form>
+						
+						
+						
+						
+						
+					</div> <!-- End #tab2 -->        
+					
+				</div> <!-- End .content-box-content -->
+				
+			</div> <!-- End .content-box -->
+
+			<div class="clear"></div>
+
+            <!-- Resultado -->
+			<div class="content-box" style="display:none;" id="id_estafador"><!-- Start Content Box -->
+				
+				<div class="content-box-header">
+					
+					<h3>Buscar estafador</h3>
+					<div class="clear"></div>
+					
+				</div> <!-- End .content-box-header -->
+				
+				<div class="content-box-content">
+					
+					<div class="tab-content default-tab" id="tab1" style="display:none;"> <!-- This is the target div. id must match the href of this div's tab -->
+
+
+					</div> <!-- End #tab1 -->
+					
+					<div class="tab-content" id="tab2">
+						<div>
+						<img src="/images/alert.png" style="float:left;margin-right:20px;"/>
+    						<h4 style="padding:5px 0 10px 0;">Alerta de estafa!</h4>
+                            <span id="ask_response"></span>
+						</div>
+							
+							<div class="clear"></div><!-- End .clear -->
+
+							
+						</form>
+
+					</div> <!-- End #tab2 -->        
+					
+				</div> <!-- End .content-box-content -->
+				
+			</div> <!-- End .content-box -->
+
+			<div id="footer">
+				<small> <!-- Remove this notice or replace it with whatever you want -->
+
+						another text | <a>lorem ipsum dolor sit amet</a>
+				</small>
+			</div><!-- End #footer -->
+			
+		</div> <!-- End #main-content -->
+		
+	</div></body>
+
+  
+</html>
+
