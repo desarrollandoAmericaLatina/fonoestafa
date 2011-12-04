@@ -17,5 +17,5 @@
     <string name="save_prefs">guadar preferencias</string>
     <string name="server">Web de Fono Estafa</string>
     <string name="prefs_saved">preferencias guardadas</string>
-
+    <string name="query_on_incoming_calls">consultar ante llamadas entrantes</string>
 </resources>

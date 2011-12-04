@@ -23,7 +23,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	}
 	
 	public static void setReceiverEnabled(boolean enabled, Context ctx) {
-		Log.v(TAG, "serReceiverEnabled " + enabled);
+		Log.v(TAG, "setReceiverEnabled " + enabled);
 		PackageManager pm = ctx.getPackageManager();
 		ComponentName cn = new ComponentName(ctx, PhoneStateReceiver.class);
 		pm.setComponentEnabledSetting(cn, 
@@ -32,5 +32,13 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 					: 
 						PackageManager.COMPONENT_ENABLED_STATE_DISABLED, 
 				PackageManager.DONT_KILL_APP);
+		
+		Log.v(TAG, "receiver enabled: " + isReceiverEnabled(ctx));
+	}
+	
+	public static boolean isReceiverEnabled(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
+		ComponentName cn = new ComponentName(ctx, PhoneStateReceiver.class);
+		return (pm.getComponentEnabledSetting(cn) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
 	}
 }

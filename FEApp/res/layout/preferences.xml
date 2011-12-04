@@ -25,7 +25,8 @@
         <EditText
             android:id="@+id/username_edit"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
 
             <requestFocus />
         </EditText>
@@ -55,6 +56,7 @@
             android:id="@+id/password_edit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:inputType="textPassword" />
 
     </TableRow>
@@ -88,20 +90,52 @@
         <EditText
             android:id="@+id/server_edit"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow8"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
 
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="@string/save_prefs" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+        </TableRow>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <CheckBox
+            android:id="@+id/service_enabled_checkbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_weight="1"
+            android:text="@string/query_on_incoming_calls" />
 
     </TableRow>
 

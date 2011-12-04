@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +24,13 @@ public class Preferences extends Activity {
 		String server = settings.getString("server", "localhost");
 		String username = settings.getString("username", "");
 		String password = settings.getString("password", "");
+		boolean service_enabled = PhoneStateReceiver.isReceiverEnabled(this);
+		Log.v(TAG, "servicio activo: " + service_enabled);
 		
 		TextView server_edit = (TextView)findViewById(R.id.server_edit);
 		TextView user_edit = (TextView)findViewById(R.id.username_edit);
 		TextView pass_edit = (TextView)findViewById(R.id.password_edit);
+		CheckBox service_enabled_cb = (CheckBox)findViewById(R.id.service_enabled_checkbox);
 		
 		server_edit.setText(server);
 		user_edit.setText(username);
@@ -40,6 +45,14 @@ public class Preferences extends Activity {
 				Toast toast = Toast.makeText(Preferences.this, 
 								Preferences.this.getText(R.string.prefs_saved), Toast.LENGTH_SHORT);
 				toast.show();
+			}
+		});
+		
+		service_enabled_cb.setChecked(service_enabled);
+		service_enabled_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				PhoneStateReceiver.setReceiverEnabled(isChecked, Preferences.this);
 			}
 		});
     }
