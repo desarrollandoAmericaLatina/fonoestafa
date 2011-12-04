@@ -14,8 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
-//import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.telephony.PhoneNumberUtils;
+
 
 public class FEAppActivity extends ListActivity {
 	
@@ -35,9 +36,9 @@ public class FEAppActivity extends ListActivity {
 			TextView number_view = (TextView)view.findViewById(android.R.id.text1);
 			TextView date_view = (TextView)view.findViewById(android.R.id.text2);
 			
-			number_view.setText(cursor.getString(this.col_number));
+			number_view.setText(PhoneNumberUtils.formatNumber(cursor.getString(this.col_number)));
 			
-			Date date = new Date(cursor.getInt(this.col_date));
+			Date date = new Date(cursor.getLong(this.col_date));
 			DateFormat df = DateFormat.getDateTimeInstance();
 			date_view.setText(df.format(date));
 		}
