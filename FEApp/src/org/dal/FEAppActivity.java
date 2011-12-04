@@ -117,7 +117,7 @@ public class FEAppActivity extends ListActivity {
 		
 		HttpClient client = new DefaultHttpClient();
 		
-		String uri_str = "http://" +server_name+ "/hustler/create?number=" + number + "&user=" + username + "&pass=" + password;
+		String uri_str = "http://" +server_name+ "/hustler/create?number=" + number + "&user=" + username + "&password=" + password;
 		Log.v(TAG, "uri: " + uri_str);
 		HttpGet request = new HttpGet(uri_str);
 		
