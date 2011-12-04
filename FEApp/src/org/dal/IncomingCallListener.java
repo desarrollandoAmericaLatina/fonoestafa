@@ -60,7 +60,7 @@ public class IncomingCallListener extends PhoneStateListener {
 		String server_name = settings.getString("server", "localhost");
 		
 		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://" + server_name + "/getinfo?num=" + number;
+		String uri_str = "http://" + server_name + "/hustler/ask?number=" + number;
 		Log.v(TAG, "consultando: |" + uri_str + "|");
 		HttpGet request = new HttpGet(uri_str);
 		try {
@@ -71,7 +71,7 @@ public class IncomingCallListener extends PhoneStateListener {
 			
 			String fields[] = line.split(";");
 			Log.v(TAG, "campo 0: " + fields[0]);
-			if (fields[0].equals("True"))
+			if (fields[0].equals("si"))
 				launch_notif(number, fields[1]);
 		}
 		catch (IOException e)

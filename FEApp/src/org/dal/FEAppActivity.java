@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -115,11 +116,17 @@ public class FEAppActivity extends ListActivity {
 		Log.v(TAG, "denunciando { server: |" + server_name + "|, user: |" + username + "|, pass: |" + password + "|");
 		
 		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://" + server_name + "/denounce";
+		
+		String uri_str = "http://" +server_name+ "/hustler/create?number=" + number + "&user=" + username + "&pass=" + password;
+		Log.v(TAG, "uri: " + uri_str);
+		HttpGet request = new HttpGet(uri_str);
+		
+		/*String uri_str = "http://" + server_name + "/hustler/create";
+		Log.v(TAG, "uri: " + uri_str);
 		HttpPost request = new HttpPost(uri_str);
-		request.addHeader("DENOUNCED_NUMBER", number);
-		request.addHeader("USER", username);
-		request.addHeader("PASS", password);
+		request.addHeader("number", number);
+		request.addHeader("user", username);
+		request.addHeader("pass", password); */
 		
 		try {
 			HttpResponse resp = client.execute(request);
@@ -158,8 +165,8 @@ public class FEAppActivity extends ListActivity {
 			editor.putBoolean("configured", true);
 			editor.putString("server", "10.0.2.2:8000");
 			//editor.putBoolean("enabled", false);
-			editor.putString("username", "fonoestafa");
-			editor.putString("password", "fonoestafa");
+			editor.putString("username", "pordefecto");
+			editor.putString("password", "pordefecto");
 			editor.commit();
 		}
 	}
@@ -176,7 +183,7 @@ public class FEAppActivity extends ListActivity {
         Cursor cursor = getContentResolver().query(Calls.CONTENT_URI, 
         		new String[] {Calls._ID, Calls.NUMBER, Calls.DATE}, 
         		Calls.TYPE + " = " + Calls.INCOMING_TYPE, 
-        		null, Calls.DEFAULT_SORT_ORDER + " LIMIT 8");
+        		null, Calls.DEFAULT_SORT_ORDER + " LIMIT 5");
         startManagingCursor(cursor);
         
         ListAdapter adapter = new CallEntryAdapter(this, cursor);
@@ -192,7 +199,6 @@ public class FEAppActivity extends ListActivity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
 
         case R.id.history:
