@@ -15,5 +15,7 @@
     <string name="username">nombre de usuario</string>
     <string name="password">contraseña</string>
     <string name="save_prefs">guadar preferencias</string>
+    <string name="server">Web de Fono Estafa</string>
+    <string name="prefs_saved">preferencias guardadas</string>
 
 </resources>
