@@ -1,5 +1,0 @@
-\beamer@endinputifotherversion {3.10pt}
-\beamer@sectionintoc {2}{Problem\IeC {\'a}tica}{3}{0}{1}
-\beamer@sectionintoc {3}{Propuesta}{4}{0}{2}
-\beamer@sectionintoc {4}{Como soluciona el problema}{9}{0}{3}
-\beamer@sectionintoc {5}{Proyecciones}{17}{0}{4}
