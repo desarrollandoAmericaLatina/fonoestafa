@@ -38,9 +38,7 @@ public class Preferences extends Activity {
 		
 		Button save_button = (Button)findViewById(R.id.save_button);
 		save_button.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Preferences.this.save();
 				Toast toast = Toast.makeText(Preferences.this, 
 								Preferences.this.getText(R.string.prefs_saved), Toast.LENGTH_SHORT);
@@ -66,6 +64,8 @@ public class Preferences extends Activity {
 		TextView pass_edit = (TextView)findViewById(R.id.password_edit);
 		
 		String server = server_edit.getText().toString();
+		if (server.startsWith("http://"))
+			server = server.substring(7, server.length());
 		String username = user_edit.getText().toString();
 		String password = pass_edit.getText().toString();
 		

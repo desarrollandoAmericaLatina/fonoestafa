@@ -25,6 +25,8 @@ import android.util.Log;
 public class PhoneStateReceiver extends BroadcastReceiver {
 	public static final String TAG = "PhoneStateReceiver";
 	
+	private String phone_number = "";
+	
 	private void launch_notif(String number, String since, Context context)
 	{
 		Log.v(TAG, "launch_notif(" + number + ", " + since + ")");
@@ -37,7 +39,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		Notification notification = new Notification(icon, tickerText, when);
 		
 		CharSequence contentTitle = context.getText(R.string.possible_scam); 
-		CharSequence contentText = context.getString(R.string .caution_format, number, since);
+		CharSequence contentText = context.getString(R.string.caution_format, number, since);
 		Intent notificationIntent = new Intent(context, PhoneStateReceiver.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
@@ -86,9 +88,20 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			Log.v(TAG, "state: " + state);
 			if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
 			{
-				String phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+				/*String*/ this.phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
 				Log.v(TAG, "pn: " + phone_number);
-				queryNumber(phone_number, context);
+				// queryNumber(phone_number, context);
+			}
+			
+			else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
+			{
+				if (!this.phone_number.equals(""))
+				{
+					Log.v(TAG, "numero guardado: " + this.phone_number);
+					queryNumber(this.phone_number, context);
+				}
+				else
+					Log.v(TAG, "no hay numero");
 			}
 		}
 		else

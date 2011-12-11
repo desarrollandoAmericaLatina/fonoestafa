@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -67,7 +66,7 @@ public class FEAppActivity extends ListActivity {
 			
 			view.setOnTouchListener(new View.OnTouchListener() {
 				public boolean onTouch(View v, MotionEvent event) {
-					confirm_denounce_number(number,  date_str);
+					confirm_denounce_number(number, date_str);
 					return false;
 				}
 			});
