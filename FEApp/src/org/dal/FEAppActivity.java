@@ -1,15 +1,7 @@
 package org.dal;
 
-
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -106,48 +98,25 @@ public class FEAppActivity extends ListActivity {
 	
 	public void do_denounce(String number)
 	{
-		Toast toast;
-		
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		String server_name = settings.getString("server", "localhost");
 		String username = settings.getString("username", "");
 		String password = settings.getString("password", "");
 		
-		Log.v(TAG, "denunciando { server: |" + server_name + "|, user: |" + username + "|, pass: |" + password + "|");
+		final int status = NetProto.denounce_number(number, username, password, server_name);
 		
-		HttpClient client = new DefaultHttpClient();
+		CharSequence msg;
 		
-		String uri_str = "http://" +server_name+ "/hustler/create?number=" + number + "&user=" + username + "&password=" + password;
-		Log.v(TAG, "uri: " + uri_str);
-		HttpGet request = new HttpGet(uri_str);
-		
-		/*
-		String uri_str = "http://" + server_name + "/denounce";
-		Log.v(TAG, "uri: " + uri_str);
-		HttpPost request = new HttpPost(uri_str);
-		request.addHeader("number", number);
-		request.addHeader("user", username);
-		request.addHeader("pass", password);
-		*/
-		
-		try {
-			HttpResponse resp = client.execute(request);
-			final int status = resp.getStatusLine().getStatusCode();
-			Log.v(TAG, "status: " + status);
-			
-			CharSequence msg;
-			
-			if (status == 200)
+		switch (status) {
+			case NetProto.RESP_OK:
 				msg = this.getText(R.string.denounce_done);
-			else
+				break;
+		
+			default:
 				msg = this.getText(R.string.connection_error);
-			
-			toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
 		}
-		catch (IOException e)
-		{
-			toast = Toast.makeText(this, this.getText(R.string.connection_error), Toast.LENGTH_SHORT);
-		}
+		
+		Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
 		toast.show();
 	}
 	

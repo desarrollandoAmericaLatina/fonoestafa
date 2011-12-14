@@ -38,7 +38,7 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 					val = int(val)
 					if ((val % 2) != 0):
 						print val,'es numero denunciado!!!'
-						return self.response(msg='si;hoy')
+						return self.response(msg=['si;hoy', 'update1', 'update2', 'update3'])
 					else:
 						return self.response(msg='no')
 
@@ -70,6 +70,8 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 		self.send_response(code)
 		self.send_header(header[0], header[1])
 		self.end_headers()
+		if type(msg) == list:
+			msg = '\n'.join(msg)
 		self.wfile.write(msg)
 
 

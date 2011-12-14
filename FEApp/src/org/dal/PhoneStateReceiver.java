@@ -1,13 +1,6 @@
 package org.dal;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.List;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -47,32 +40,28 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	}
 	
 	
-	private void queryNumber(String number, Context context)
+	private boolean isUsableWifi()
+	{
+		return true;
+	}
+	
+	
+	private String isInLocalBlacklistSince(String number)
+	{
+		return "";
+	}
+	
+	
+	private void queryNumberByNetAndUpdate(String number, Context context)
 	{
 		Log.v(TAG, "queryNumber");
 		
 		SharedPreferences settings = context.getSharedPreferences(FEAppActivity.PREFS_NAME, 0);
 		String server_name = settings.getString("server", "localhost");
 		
-		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://" + server_name + "/hustler/ask?number=" + number;
-		Log.v(TAG, "consultando: |" + uri_str + "|");
-		HttpGet request = new HttpGet(uri_str);
-		try {
-			HttpResponse resp = client.execute(request);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
-			String line = reader.readLine();
-			Log.v(TAG, "linea recibida: |" + line + "|");
-			
-			String fields[] = line.split(";");
-			Log.v(TAG, "campo 0: " + fields[0]);
-			if (fields[0].equals("si"))
-				launch_notif(number, fields[1], context);
-		}
-		catch (IOException e)
-		{
-			Log.v(TAG, "error de conexion: " + e.toString());
-		}
+		List<String> resp = NetProto.queryNumberAndGetUpdates(number, server_name);
+		if ((resp != null) && (!resp.get(0).equals("no")))
+			launch_notif(number, resp.get(0), context);
 	}
 	
 	@Override
@@ -87,8 +76,13 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
 			{
 				String phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-				//Log.v(TAG, "pn: " + phone_number);
-				queryNumber(phone_number, context);
+				String denounced_since = isInLocalBlacklistSince(phone_number);
+				if (!denounced_since.equals(""))
+				{
+					launch_notif(phone_number, denounced_since, context);
+				}
+				else if (isUsableWifi())
+					queryNumberByNetAndUpdate(phone_number, context);
 			}
 			
 			/*else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
