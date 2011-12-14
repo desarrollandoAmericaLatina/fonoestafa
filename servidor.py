@@ -7,28 +7,55 @@ PORT = 8000
 
 
 class RodHTTPHandler(SimpleHTTPRequestHandler):
+	#def do_GET(self):
+	#	args = urlparse(self.path)
+	#	if args.path != '/hustler/ask':
+	#		return SimpleHTTPRequestHandler.do_GET(self)
+	#	print '...'
+	#	#time.sleep(3)
+	#	query = args.query.split('&')
+	#	for param in query:
+	#		key, val = param.split('=')
+	#		if key == 'number':
+	#			print 'consultan por', val
+	#			val = int(val)
+	#			if (val%2 != 0):
+	#				
+	#				print val, ' es numero denunciado'
+	#				return self.response(msg = 'si;hoy')
+	#			else:
+	#				return self.response(msg = 'False')
+
+	
 	def do_GET(self):
 		args = urlparse(self.path)
-		if args.path != '/getinfo':
+		if args.path == '/hustler/ask':
+			query = args.query.split('&')
+			for param in query:
+				key, val = param.split('=', 1)
+				if (key == 'number'):
+					print 'consultan por', val
+					val = int(val)
+					if ((val % 2) != 0):
+						print val,'es numero denunciado!!!'
+						return self.response(msg='si;hoy')
+					else:
+						return self.response(msg='no')
+
+		elif args.path == '/hustler/create':
+			print 'denuncia!!!'
+			query = args.query.split(',')
+			for param in query:
+				print ' ', param
+			return self.response()
+
+		else:
 			return SimpleHTTPRequestHandler.do_GET(self)
-		print '...'
-		#time.sleep(3)
-		query = args.query.split('&')
-		for param in query:
-			key, val = param.split('=')
-			if key == 'number':
-				print 'consultan por', val
-				val = int(val)
-				if (val%2 != 0):
-					
-					print val, ' es numero denunciado'
-					return self.response(msg = 'si;hoy')
-				else:
-					return self.response(msg = 'False')
+
 
 	def do_POST(self):
 		args = urlparse(self.path)
-		if args.path != '/denounce':
+		if args.path != '/create':
 			return self.response(code=400)
 
 		print 'llego un POST!!'

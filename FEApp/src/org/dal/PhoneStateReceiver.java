@@ -25,8 +25,6 @@ import android.util.Log;
 public class PhoneStateReceiver extends BroadcastReceiver {
 	public static final String TAG = "PhoneStateReceiver";
 	
-	private String phone_number = "";
-	
 	private void launch_notif(String number, String since, Context context)
 	{
 		Log.v(TAG, "launch_notif(" + number + ", " + since + ")");
@@ -57,7 +55,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		String server_name = settings.getString("server", "localhost");
 		
 		HttpClient client = new DefaultHttpClient();
-		String uri_str = "http://" + server_name + "/getinfo?number=" + number;
+		String uri_str = "http://" + server_name + "/hustler/ask?number=" + number;
 		Log.v(TAG, "consultando: |" + uri_str + "|");
 		HttpGet request = new HttpGet(uri_str);
 		try {
@@ -88,12 +86,12 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			Log.v(TAG, "state: " + state);
 			if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
 			{
-				/*String*/ this.phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
-				Log.v(TAG, "pn: " + phone_number);
-				// queryNumber(phone_number, context);
+				String phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+				//Log.v(TAG, "pn: " + phone_number);
+				queryNumber(phone_number, context);
 			}
 			
-			else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
+			/*else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
 			{
 				if (!this.phone_number.equals(""))
 				{
@@ -102,7 +100,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 				}
 				else
 					Log.v(TAG, "no hay numero");
-			}
+			}*/
 		}
 		else
 			Log.v(TAG, "extras está nulo");

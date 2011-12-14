@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -116,17 +117,18 @@ public class FEAppActivity extends ListActivity {
 		
 		HttpClient client = new DefaultHttpClient();
 		
-		/*
 		String uri_str = "http://" +server_name+ "/hustler/create?number=" + number + "&user=" + username + "&password=" + password;
 		Log.v(TAG, "uri: " + uri_str);
-		HttpGet request = new HttpGet(uri_str);*/
+		HttpGet request = new HttpGet(uri_str);
 		
+		/*
 		String uri_str = "http://" + server_name + "/denounce";
 		Log.v(TAG, "uri: " + uri_str);
 		HttpPost request = new HttpPost(uri_str);
 		request.addHeader("number", number);
 		request.addHeader("user", username);
 		request.addHeader("pass", password);
+		*/
 		
 		try {
 			HttpResponse resp = client.execute(request);
