@@ -6,25 +6,18 @@ import SocketServer
 PORT = 8000
 
 
+LAST_DAY_NUMBER = 1
+LAST_PHN_NUMBER = 996601
+
 class RodHTTPHandler(SimpleHTTPRequestHandler):
-	#def do_GET(self):
-	#	args = urlparse(self.path)
-	#	if args.path != '/hustler/ask':
-	#		return SimpleHTTPRequestHandler.do_GET(self)
-	#	print '...'
-	#	#time.sleep(3)
-	#	query = args.query.split('&')
-	#	for param in query:
-	#		key, val = param.split('=')
-	#		if key == 'number':
-	#			print 'consultan por', val
-	#			val = int(val)
-	#			if (val%2 != 0):
-	#				
-	#				print val, ' es numero denunciado'
-	#				return self.response(msg = 'si;hoy')
-	#			else:
-	#				return self.response(msg = 'False')
+	def make_dates(self):
+		global LAST_DAY_NUMBER, LAST_PHN_NUMBER
+		d1 = '%d;2011-12-%02d 10:20:30' % ((LAST_PHN_NUMBER + 0), (LAST_DAY_NUMBER + 0))
+		d2 = '%d;2011-12-%02d 10:20:30' % ((LAST_PHN_NUMBER + 1), (LAST_DAY_NUMBER + 1))
+		d3 = '%d;2011-12-%02d 10:20:30' % ((LAST_PHN_NUMBER + 2), (LAST_DAY_NUMBER + 2))
+		LAST_DAY_NUMBER += 3
+		LAST_PHN_NUMBER += 3
+		return [d1, d2, d3]
 
 	
 	def do_GET(self):
@@ -35,12 +28,14 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 				key, val = param.split('=', 1)
 				if (key == 'number'):
 					print 'consultan por', val
-					val = int(val)
-					if ((val % 2) != 0):
-						print val,'es numero denunciado!!!'
-						return self.response(msg=['si;hoy', 'update1', 'update2', 'update3'])
+					num = int(val)
+					if ((num % 2) != 0):
+						print num,'es numero denunciado!!!'
+						return self.response(msg=['si;hoy'] + self.make_dates())
 					else:
 						return self.response(msg='no')
+				else:
+					print key, ' --> ', val
 
 		elif args.path == '/hustler/create':
 			print 'denuncia!!!'
@@ -60,7 +55,6 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 
 		print 'llego un POST!!'
 		print '...'
-		#time.sleep(3)
 		print self.headers
 		return self.response(msg='OK')
 

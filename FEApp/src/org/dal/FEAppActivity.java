@@ -1,6 +1,7 @@
 package org.dal;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.AlertDialog;
@@ -150,6 +151,10 @@ public class FEAppActivity extends ListActivity {
         setContentView(R.layout.main);
         
         init_prefs();
+        
+        Date today = new Date();
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Log.v(TAG, "today: " + fmt.format(today));
         
         Cursor cursor = getContentResolver().query(Calls.CONTENT_URI, 
         		new String[] {Calls._ID, Calls.NUMBER, Calls.DATE}, 
