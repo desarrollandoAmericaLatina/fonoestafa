@@ -51,6 +51,26 @@ public class NetProto {
 	}
 	
 	
+	public static String queryStatus(String server_name)
+	{
+		HttpClient client = new DefaultHttpClient();
+		
+		String uri_str = "http://" + server_name + "/hustler/status";
+		HttpGet request = new HttpGet(uri_str);
+		try {
+			HttpResponse resp = client.execute(request);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resp.getEntity().getContent()));
+			String line = reader.readLine();
+			Log.v(TAG, "respuesta a status: " + line);
+			return line;
+		}
+		catch (IOException e)
+		{
+			return "";
+		}
+	}
+	
+	
 	public static int denounce_number(String number, String username, String password, String server_name)
 	{
 		Log.v(TAG, "denunciando { server: |" + server_name + "|, user: |" + username + "|, pass: |" + password + "|");

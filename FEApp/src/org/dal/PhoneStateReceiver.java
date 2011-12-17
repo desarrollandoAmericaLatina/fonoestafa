@@ -41,11 +41,8 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	
 	private boolean isUsableWifi(Context context)
 	{
-		return false;
-		/*
 		ConnectivityManager cmanager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		return cmanager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
-		*/
 	}
 	
 

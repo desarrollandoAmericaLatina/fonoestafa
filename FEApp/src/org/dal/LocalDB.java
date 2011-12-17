@@ -42,12 +42,15 @@ public class LocalDB extends SQLiteOpenHelper {
 			String num = numbers.get(i);
 			Log.v(TAG, "agregando numero: " + num);
 			
-			// query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
 			Cursor c = db.query(DB_TABLE, 
 								new String[] { KEY_NUMBER }, 
 								KEY_NUMBER + " = " + num, 
 								null, null, null, null);
-			if (c == null)
+			
+			boolean previous_data = ((c != null) && (c.getCount() > 0));
+			c.close();
+			
+			if (!previous_data)
 			{
 				Log.v(TAG, "insert...");
 				ContentValues vals = new ContentValues();
@@ -71,7 +74,6 @@ public class LocalDB extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getReadableDatabase();
 		
-		// query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy)
 		Cursor c = db.query(DB_TABLE, 
 							new String[] { KEY_SINCE }, 
 							KEY_NUMBER + " = " + number, 
@@ -83,8 +85,41 @@ public class LocalDB extends SQLiteOpenHelper {
 		Log.v(TAG, "num rows: " + c.getCount() + ", num cols: " + c.getColumnCount());
 		c.moveToFirst();
 		String result = c.getString(0);
+		c.close();
 		Log.v(TAG, "resultado query: " + result);
 		return result;
+	}
+	
+	
+	public void cleanDatabase()
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("delete from " + DB_TABLE);
+		db.close();
+	}
+	
+	
+	
+	public void logTableContents()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor c = db.query(DB_TABLE, new String[] {KEY_NUMBER, KEY_SINCE}, null, null, null, null, KEY_SINCE);
+		if (c == null)
+		{
+			Log.v(TAG, "cursor nulo");
+			db.close();
+			return;
+		}
+		
+		c.moveToFirst();
+		for (int i=0; i<c.getCount(); i++)
+		{
+			String num = c.getString(0);
+			String since = c.getString(1);
+			Log.v(TAG, "data: " + num + ", " + since);
+			c.moveToNext();
+		}
+		db.close();
 	}
 	
 	

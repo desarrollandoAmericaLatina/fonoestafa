@@ -44,6 +44,22 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 				print ' ', param
 			return self.response()
 
+		elif args.path == '/hustler/updates':
+			print 'updates!!!'
+			query = args.query.split(',')
+			for param in query:
+				print ' ', param
+			return self.response(msg=self.make_dates())
+
+		elif args.path == '/hustler/status':
+			print 'status!!!'
+			if LAST_DAY_NUMBER == 1:
+				msg = 'EMPTY'
+			else:
+				msg = 'WITH DATA'
+			print msg
+			return self.response(msg=msg)
+
 		else:
 			return SimpleHTTPRequestHandler.do_GET(self)
 
