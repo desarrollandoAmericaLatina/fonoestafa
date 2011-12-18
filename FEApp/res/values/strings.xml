@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fono Estafa</string>
-    <string name="possible_scam">Posible estafa</string>
+    <string name="possible_scam">Número denunciado por estafa</string>
     <string name="caution">Atención Atención</string>
-    <string name="caution_format">nro. %1$s  denunciado desde %2$s</string>
+    <string name="caution_format">%1$s  denunciado desde %2$s</string>
     <string name="denounce_scam_attempt">Denuncie intento de estafa</string>
     <string name="do_denounce">denunciar</string>
     <string name="denounce_question_format">denunciar el numero %1$s ?</string>
