@@ -42,63 +42,54 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	private boolean isUsableWifi(Context context)
 	{
 		ConnectivityManager cmanager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return cmanager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+		boolean result = cmanager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+		Log.v(TAG, "isUsableWifi: " + result);
+		return result;
 	}
 	
 
 	private boolean isUsableMobileNet(Context context)
 	{
 		ConnectivityManager cmanager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return cmanager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected();
-	}
-	
-	private String isInLocalBlacklistSince(String number, Context context)
-	{
-		Log.v(TAG, "isInLocalBlacklistSince");
-		LocalDB db = new LocalDB(context);
-		String result = db.queryNumber(number);
-		db.close();
-		
+		boolean result = cmanager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected();
+		Log.v(TAG, "isUsableMobileNet: " + result);
 		return result;
 	}
 	
 	
-	private void queryNumberByNetAndUpdate(String number, Context context)
+	private void queryNumberByNetAndUpdate(String number, Context context, LocalDB db)
 	{
-		Log.v(TAG, "queryNumber");
+		Log.v(TAG, "queryNumberByNetAndUpdate");
 		
 		SharedPreferences settings = context.getSharedPreferences(FEAppActivity.PREFS_NAME, 0);
 		String server_name = settings.getString("server", "localhost");
-		
+
 		NetProto.Response resp = NetProto.queryNumberAndGetUpdates(number, server_name);
 		if ((resp != null) && resp.found)
 			launch_notif(number, resp.since, context);
 		
-		LocalDB db = new LocalDB(context);
 		db.addUpdates(resp.extra_numbers, resp.extra_dates);
-		db.close();
 	}
 	
 	
-	private void updateFromNetwork(Context context)
+	private void updateFromNetwork(Context context, LocalDB db)
 	{
 		Log.v(TAG, "updateFromNetwork");
 		SharedPreferences settings = context.getSharedPreferences(FEAppActivity.PREFS_NAME, 0);
 		String server_name = settings.getString("server", "localhost");
-		
+
 		NetProto.Response resp = NetProto.getUpdatesForToday(server_name);
 		if (resp.found)
 		{
 			Log.v(TAG, "hay updates!!!");
-			LocalDB db = new LocalDB(context);
 			db.addUpdates(resp.extra_numbers, resp.extra_dates);
-			db.close();
 		}
 	}
 	
 	
 	private static void storeNumber(String number, Context context)
 	{
+		Log.v(TAG, "storeNumber");
 		SharedPreferences settings = context.getSharedPreferences(FEAppActivity.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("current_number", number);
@@ -122,19 +113,24 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 			Log.v(TAG, "state: " + state);
 			if (state.equals(TelephonyManager.EXTRA_STATE_RINGING))
 			{
-				String phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);				
-				String denounced_since = isInLocalBlacklistSince(phone_number, context);
+				Log.v(TAG, "state ringing");
+				LocalDB db = new LocalDB(context);
+				String phone_number = extras.getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+				String denounced_since = db.queryNumber(phone_number);
+				Log.v(TAG, "since: " + denounced_since);
 				if (!denounced_since.equals(""))
 				{
 					launch_notif(phone_number, denounced_since, context);
-					updateFromNetwork(context);
+					updateFromNetwork(context, db);
 				}
 				else {
+					Log.v(TAG, "no esta en db local");
 					if (isUsableWifi(context))
-						queryNumberByNetAndUpdate(phone_number, context);
+						queryNumberByNetAndUpdate(phone_number, context, db);
 					else
 						storeNumber(phone_number, context);
 				}
+				db.close();
 			}
 			
 			else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
@@ -146,8 +142,11 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 				if (!phone_number.equals(""))
 				{
 					if (isUsableMobileNet(context))
-						queryNumberByNetAndUpdate(phone_number, context);
-					
+					{
+						LocalDB db = new LocalDB(context);
+						queryNumberByNetAndUpdate(phone_number, context, db);
+						db.close();
+					}
 					storeNumber("", context);
 				}
 				else

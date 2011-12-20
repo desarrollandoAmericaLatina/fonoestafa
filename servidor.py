@@ -22,7 +22,7 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 	
 	def do_GET(self):
 		args = urlparse(self.path)
-		if args.path == '/hustler/ask':
+		if args.path == '/lookup':
 			query = args.query.split('&')
 			for param in query:
 				key, val = param.split('=', 1)
@@ -37,21 +37,21 @@ class RodHTTPHandler(SimpleHTTPRequestHandler):
 				else:
 					print key, ' --> ', val
 
-		elif args.path == '/hustler/create':
+		elif args.path == '/denounce':
 			print 'denuncia!!!'
 			query = args.query.split(',')
 			for param in query:
 				print ' ', param
 			return self.response()
 
-		elif args.path == '/hustler/updates':
+		elif args.path == '/updates':
 			print 'updates!!!'
 			query = args.query.split(',')
 			for param in query:
 				print ' ', param
 			return self.response(msg=self.make_dates())
 
-		elif args.path == '/hustler/status':
+		elif args.path == '/status':
 			print 'status!!!'
 			if LAST_DAY_NUMBER == 1:
 				msg = 'EMPTY'

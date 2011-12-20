@@ -3,9 +3,9 @@ package org.dal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,19 +43,12 @@ public class NetProto {
 	public static final int RESP_OK = 200;
 	
 	
-	public static String today_as_string()
-	{
-		Date today = new Date();
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return fmt.format(today);
-	}
-	
 	
 	public static String queryStatus(String server_name)
 	{
 		HttpClient client = new DefaultHttpClient();
 		
-		String uri_str = "http://" + server_name + "/hustler/status";
+		String uri_str = "http://" + server_name + "/status";
 		HttpGet request = new HttpGet(uri_str);
 		try {
 			HttpResponse resp = client.execute(request);
@@ -71,6 +64,7 @@ public class NetProto {
 	}
 	
 	
+	
 	public static int denounce_number(String number, String username, String password, String server_name)
 	{
 		Log.v(TAG, "denunciando { server: |" + server_name + "|, user: |" + username + "|, pass: |" + password + "|");
@@ -81,7 +75,7 @@ public class NetProto {
 		keyval.add(new BasicNameValuePair("user", username));
 		keyval.add(new BasicNameValuePair("password", password));
 		
-		String uri_str = "http://" + server_name + "/hustler/create?" + URLEncodedUtils.format(keyval, "utf-8");
+		String uri_str = "http://" + server_name + "/denounce?" + URLEncodedUtils.format(keyval, "utf-8");
 		Log.v(TAG, "uri: " + uri_str);
 		HttpGet request = new HttpGet(uri_str);
 		
@@ -113,8 +107,8 @@ public class NetProto {
 		
 		List<NameValuePair> keyval = new ArrayList<NameValuePair>(2);
 		keyval.add(new BasicNameValuePair("number", number));
-		keyval.add(new BasicNameValuePair("since", today_as_string()));
-		String uri_str = "http://" + server_name + "/hustler/ask?" + URLEncodedUtils.format(keyval, "utf-8");
+		//keyval.add(new BasicNameValuePair("since", last_date));
+		String uri_str = "http://" + server_name + "/lookup?" + URLEncodedUtils.format(keyval, "utf-8");
 		
 		Log.v(TAG, "consultando: |" + uri_str + "|");
 		
@@ -164,9 +158,9 @@ public class NetProto {
 	{
 		HttpClient client = new DefaultHttpClient();
 		
-		List<NameValuePair> keyval = new ArrayList<NameValuePair>(1);
-		keyval.add(new BasicNameValuePair("since", today_as_string()));
-		String uri_str = "http://" + server_name + "/hustler/updates?" + URLEncodedUtils.format(keyval, "utf-8");
+		//List<NameValuePair> keyval = new ArrayList<NameValuePair>(1);
+		//keyval.add(new BasicNameValuePair("since", last_date));
+		String uri_str = "http://" + server_name + "/updates"; // ?" + URLEncodedUtils.format(keyval, "utf-8");
 		
 		Log.v(TAG, "consultando: |" + uri_str + "|");
 		

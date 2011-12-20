@@ -86,7 +86,27 @@ public class LocalDB extends SQLiteOpenHelper {
 		c.moveToFirst();
 		String result = c.getString(0);
 		c.close();
+
 		Log.v(TAG, "resultado query: " + result);
+		return result;
+	}
+	
+	
+	public String queryLastDate()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		Cursor c = db.query(DB_TABLE, new String[] {KEY_SINCE}, 
+							null, null, null, null, KEY_SINCE + " DESC");
+		
+		if ((c == null) || (c.getCount() == 0))
+			return "";
+		
+		c.moveToFirst();
+		String result = c.getString(0);
+		c.close();
+		db.close();
+		
 		return result;
 	}
 	
@@ -119,6 +139,7 @@ public class LocalDB extends SQLiteOpenHelper {
 			Log.v(TAG, "data: " + num + ", " + since);
 			c.moveToNext();
 		}
+		c.close();
 		db.close();
 	}
 	

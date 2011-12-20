@@ -31,6 +31,8 @@ import android.telephony.PhoneNumberUtils;
 public class FEAppActivity extends ListActivity {
 	public static final String TAG = "FEActivity";
 	
+	public static final boolean QUERY_STATUS = true;
+	
 	public static final String PREFS_NAME = "FEApp";
 	
 	public class CallEntryAdapter extends CursorAdapter {
@@ -165,17 +167,23 @@ public class FEAppActivity extends ListActivity {
         ListAdapter adapter = new CallEntryAdapter(this, cursor);
         setListAdapter(adapter);
         
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		String server_name = settings.getString("server", "localhost");
-        String remote_status = NetProto.queryStatus(server_name);
-        
         LocalDB db = new LocalDB(this);
         db.logTableContents();
+ 
+        String last_date = db.queryLastDate();
+        Log.v(TAG, "ultima fecha: " + last_date);
         
-        if (remote_status.equals("EMPTY"))
+        if (QUERY_STATUS)
         {
-        	Log.v(TAG, "limpiando la tabla local");
-        	db.cleanDatabase();
+        	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        	String server_name = settings.getString("server", "localhost");
+        	String remote_status = NetProto.queryStatus(server_name);
+        
+        	if (remote_status.equals("EMPTY"))
+        	{
+        		Log.v(TAG, "limpiando la tabla local");
+        		db.cleanDatabase();
+        	}
         }
     }
     
