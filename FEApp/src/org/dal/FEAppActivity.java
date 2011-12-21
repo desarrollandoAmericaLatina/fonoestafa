@@ -185,6 +185,8 @@ public class FEAppActivity extends ListActivity {
         		db.cleanDatabase();
         	}
         }
+        
+        db.close();
     }
     
     @Override

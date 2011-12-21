@@ -68,6 +68,7 @@ public class LocalDB extends SQLiteOpenHelper {
 				Log.v(TAG, "update: " + n);
 			}
 		}
+		db.close();
 	}
 	
 	public String queryNumber(String number)
@@ -105,7 +106,6 @@ public class LocalDB extends SQLiteOpenHelper {
 		c.moveToFirst();
 		String result = c.getString(0);
 		c.close();
-		db.close();
 		
 		return result;
 	}
@@ -140,7 +140,6 @@ public class LocalDB extends SQLiteOpenHelper {
 			c.moveToNext();
 		}
 		c.close();
-		db.close();
 	}
 	
 	
