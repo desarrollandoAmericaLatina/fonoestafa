@@ -81,7 +81,11 @@ public class LocalDB extends SQLiteOpenHelper {
 							null, null, null, null);
 		
 		if ((c == null) || (c.getCount() == 0))
+		{
+			if (c != null)
+				c.close();
 			return "";
+		}
 		
 		Log.v(TAG, "num rows: " + c.getCount() + ", num cols: " + c.getColumnCount());
 		c.moveToFirst();
@@ -101,7 +105,11 @@ public class LocalDB extends SQLiteOpenHelper {
 							null, null, null, null, KEY_SINCE + " DESC");
 		
 		if ((c == null) || (c.getCount() == 0))
+		{
+			if (c != null)
+				c.close();
 			return "";
+		}
 		
 		c.moveToFirst();
 		String result = c.getString(0);
