@@ -65,10 +65,16 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		String server_name = settings.getString("server", "localhost");
 
 		NetProto.Response resp = NetProto.queryNumberAndGetUpdates(number, server_name);
-		if ((resp != null) && resp.found)
-			launch_notif(number, resp.since, context);
-		
-		db.addUpdates(resp.extra_numbers, resp.extra_dates);
+		if (resp != null)
+		{
+			if (resp.found)
+			{
+				Log.v(TAG, "since: " + resp.since);
+				launch_notif(number, resp.since, context);
+			}
+
+			db.addUpdates(resp.extra_numbers, resp.extra_dates);
+		}
 	}
 	
 	
@@ -79,7 +85,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 		String server_name = settings.getString("server", "localhost");
 
 		NetProto.Response resp = NetProto.getUpdatesForToday(server_name);
-		if (resp.found)
+		if ((resp != null) && resp.found)
 		{
 			Log.v(TAG, "hay updates!!!");
 			db.addUpdates(resp.extra_numbers, resp.extra_dates);
