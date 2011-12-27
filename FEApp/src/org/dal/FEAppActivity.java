@@ -137,7 +137,7 @@ public class FEAppActivity extends ListActivity {
 			Log.v(TAG, "aplicacion no tiene config");
 			SharedPreferences.Editor editor = settings.edit();
 			editor.putBoolean("configured", true);
-			editor.putString("server", "10.0.2.2:8000");
+			editor.putString("server", NetProto.DEFAULT_SERVER);
 			//editor.putBoolean("enabled", false);
 			editor.putString("username", "pordefecto");
 			editor.putString("password", "pordefecto");
@@ -158,7 +158,7 @@ public class FEAppActivity extends ListActivity {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Log.v(TAG, "today: " + fmt.format(today));
         
-        Cursor cursor = getContentResolver().query(Calls.CONTENT_URI, 
+        Cursor cursor = getContentResolver().query(Calls.CONTENT_URI,
         		new String[] {Calls._ID, Calls.NUMBER, Calls.DATE}, 
         		Calls.TYPE + " = " + Calls.INCOMING_TYPE, 
         		null, Calls.DEFAULT_SORT_ORDER + " LIMIT 5");

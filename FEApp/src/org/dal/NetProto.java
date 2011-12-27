@@ -20,7 +20,6 @@ import org.apache.http.message.BasicNameValuePair;
 import android.util.Log;
 
 
-
 public class NetProto {
 	public static class Response
 	{
@@ -37,6 +36,8 @@ public class NetProto {
 			this.extra_dates = new LinkedList<String>();
 		}
 	}
+	
+	public static final String DEFAULT_SERVER = "fono.joaquinnunez.cl";
 	
 	public static final String TAG = "NetProto";
 	public static final int CONNECTION_ERROR = -1;
